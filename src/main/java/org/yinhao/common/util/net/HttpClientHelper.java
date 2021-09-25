@@ -34,20 +34,17 @@ public class HttpClientHelper {
 
     static {
         ConnectionSocketFactory plainsf = PlainConnectionSocketFactory.getSocketFactory();
-
         LayeredConnectionSocketFactory sslsf = SSLConnectionSocketFactory.getSocketFactory();
 
         Registry<ConnectionSocketFactory> registry = RegistryBuilder.<ConnectionSocketFactory>create()
                 .register("http", plainsf).register("https", sslsf).build();
 
         PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager(registry);
-
         // 将最大连接数增加到1000
         cm.setMaxTotal(50);
 
         // 将每个路由基础的连接增加到100
         cm.setDefaultMaxPerRoute(10);
-
         httpClient = HttpClients.custom().setConnectionManager(cm).build();
     }
 
